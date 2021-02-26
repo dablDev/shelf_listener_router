@@ -1,0 +1,16 @@
+include: package:pedantic/analysis_options.yaml
+
+linter:
+  rules:
+    camel_case_types: true
+    always_specify_types: true
+    omit_local_variable_types: false
+    unnecessary_this: false
+    prefer_conditional_assignment: false
+    avoid_void_async: true
+
+
+analyzer:
+  strong-mode:
+    implicit-casts: false
+    implicit-dynamic: false
