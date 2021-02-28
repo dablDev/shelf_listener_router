@@ -2,7 +2,7 @@ import 'handlers.dart' as h;
 import 'frames.dart' as f;
 import 'dart:typed_data' as t;
 
-typedef Listener = void Function(t.Uint8List bytes);
+typedef Listener = void Function(dynamic bytes);
 
 typedef Logger = void Function(String msg);
 
@@ -51,10 +51,10 @@ class Router{
   }
 
   Listener get listener {
-    return (t.Uint8List bytes) {
+    return (dynamic bytes) {
       f.Frame frame;
       try {
-        frame = f.Frame.read(bytes);
+        frame = f.Frame.read(bytes as t.Uint8List);
       }
       catch (e, s) {
         this._logger('Message is not a frame');
