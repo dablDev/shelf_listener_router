@@ -1,8 +1,11 @@
+import 'dart:typed_data' as t;
+import 'dart:async' as async;
+
 import 'handlers.dart' as h;
 import 'frames.dart' as f;
-import 'dart:typed_data' as t;
 
-typedef Listener = void Function(dynamic bytes);
+
+typedef Listener = async.FutureOr<void> Function(dynamic bytes);
 
 typedef Logger = void Function(String msg);
 
@@ -50,8 +53,9 @@ class Router{
     }
   }
 
-  Listener get listener {
-    return (dynamic bytes) {
+  Listener getlistener([h.Middleware middleware]) {
+    return (dynamic bytes) async{
+      middleware = middleware ?? (h.Handler handler) => handler;
       f.Frame frame;
       try {
         frame = f.Frame.read(bytes as t.Uint8List);
@@ -68,7 +72,7 @@ class Router{
         }
         else{
           try {
-            this._handlers[frame.url](frame);
+            await middleware(this._handlers[frame.url])(frame);
           }
           catch (e, s) {
             this._logger('Handler ${frame.url} crashed');

@@ -30,7 +30,13 @@ void main(){
   p.packInt(2);
 
   async.StreamController<t.Uint8List> s = async.StreamController<t.Uint8List>.broadcast();
-  s.stream.listen(external_router.listener);
+  s.stream.listen(external_router.getlistener(
+          (lr.Handler handler) =>
+          (lr.Frame frame) {
+            print('Middleware in listener');
+            handler(frame);
+          }
+  ));
 
   s.sink.add(lr.getMsgBytes(p.takeBytes(), '/gen/url', <String, String>{'f': '2'}));
 }

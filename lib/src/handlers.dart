@@ -1,6 +1,7 @@
 import 'frames.dart' as f;
+import 'dart:async' as async;
 
-typedef Handler = void Function(f.Frame frame);
+typedef Handler = async.FutureOr<void> Function(f.Frame frame);
 typedef Middleware = Handler Function(Handler handler);
 
 class Pipeline {
